@@ -20,7 +20,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        HomeVM home = new() {
+        HomeVM home = new(){
             Categorias = _context.Categorias
                 .Where(c => c.ExibirHome)
                 .AsNoTracking()
@@ -44,6 +44,7 @@ public class HomeController : Controller
             .FirstOrDefault(r => r.Id == id);
         return View(receita);
     }
+
     public IActionResult Privacy()
     {
         return View();
