@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
-using GCook.ViewModels;
 using GCook.Services;
+using GCook.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GCook.Controllers;
 
@@ -37,13 +37,13 @@ public class AccountController : Controller
         {
             var result = await _usuarioService.LoginUsuario(login);
             if (result.Succeeded)
-               return LocalRedirect(login.UrlRetorno);
+                return LocalRedirect(login.UrlRetorno);
             if (result.IsLockedOut)
-               return RedirectToAction("Lockout");
+                return RedirectToAction("Lockout");
             if (result.IsNotAllowed)
                 ModelState.AddModelError(string.Empty, "Sua conta não está confirmada, verifique seu email!!");
             else
-                ModelState.AddModelError(string.Empty, "Usuário e/ou Senha Inválidos!!!");
+                ModelState.AddModelError(string.Empty, "Usuario e/ou Senha Inválidos!!!");
         }
         return View(login);
     }
@@ -62,7 +62,7 @@ public class AccountController : Controller
         RegistroVM register = new();
         return View(register);
     }
-    
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Registro(RegistroVM register)
@@ -72,11 +72,11 @@ public class AccountController : Controller
         {
             var result = await _usuarioService.RegistrarUsuario(register);
             if (result != null)
-               foreach (var error in result)
-               {
-                ModelState.AddModelError(string.Empty, error);
-               }
-               register.Enviado = result == null;
+                foreach (var error in result)
+                {
+                    ModelState.AddModelError(string.Empty, error);
+                }
+            register.Enviado = result == null;
         }
         return View(register);
     }
@@ -85,5 +85,16 @@ public class AccountController : Controller
     public async Task<IActionResult> ConfirmarEmail(string userId, string code)
     {
         if (userId == null || code == null)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+        await _usuarioService.ConfirmarEmail(userId, code);
+        return View(true);
+    }
+
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View("Error!");
     }
 }
