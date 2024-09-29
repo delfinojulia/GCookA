@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GCook.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240923115340_corrigebanco")]
-    partial class corrigebanco
+    [Migration("20240929032559_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -434,9 +434,9 @@ namespace GCook.Migrations
                         new
                         {
                             UsuarioId = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
-                            DataNascimento = new DateTime(2007, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DataNascimento = new DateTime(1981, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Foto = "/img/usuarios/avatar.png",
-                            Nome = "Matheus Bertolini"
+                            Nome = "José Francisco Dos Santos Neto"
                         });
                 });
 
@@ -579,15 +579,15 @@ namespace GCook.Migrations
                         {
                             Id = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a9cc275c-9085-468f-b60b-d9d31fd0313c",
+                            ConcurrencyStamp = "92dbec84-7b92-4e8e-b0f8-063ba69adda9",
                             Email = "admin@gcook.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GCOOK.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKg/6FyQqxkF+8Blb0j2mQwgCFSU0h0LxnIvRVfVhxfVOSCk1RgxC2xWwTMTrKC2iw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHrgw8NCwr4WZbAq2OqSIIyDCyDTVZLQOvkH9eVq1wegXYKZQsylt87VUI+MWu3cbA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f24b1322-3882-4a37-ac33-748d3bd50eb4",
+                            SecurityStamp = "d94af1b7-1ef5-461c-bca0-784a5b9b8648",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -724,7 +724,7 @@ namespace GCook.Migrations
             modelBuilder.Entity("GCook.Models.ReceitaIngrediente", b =>
                 {
                     b.HasOne("GCook.Models.Ingrediente", "Ingrediente")
-                        .WithMany()
+                        .WithMany("Receitas")
                         .HasForeignKey("IngredienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -800,6 +800,11 @@ namespace GCook.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GCook.Models.Ingrediente", b =>
+                {
+                    b.Navigation("Receitas");
                 });
 
             modelBuilder.Entity("GCook.Models.Receita", b =>
